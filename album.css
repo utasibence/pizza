@@ -1,0 +1,143 @@
+.bg-dark {
+  background: #C00A27 !important;
+}
+
+.fa-pizza-slice {
+  color: white;
+  font-size: 40px;
+}
+
+.fa-shopping-cart {
+  font-size: 30px;
+}
+
+.cart-num {
+  margin-left: 5px;
+}
+
+.fa-sort-up {
+  font-size: 40px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+.email {
+  border-radius: 0;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border: 0;
+}
+
+.email:focus, .password:focus, .login-btn:focus {
+  box-shadow: 0 0 0 0;
+  background: white;
+}
+
+.password {
+  border-radius: 0;
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+
+.password:focus {
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+
+.login-btn {
+  border-radius: 0;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.modal {
+  margin-top: 150px;
+}
+
+.order {
+  margin-bottom: 5px;
+}
+
+.order:focus {
+  box-shadow: none;
+  border-color: lightgrey;
+}
+
+.album {
+  min-height: calc(100vh - 150px);
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.buy-btn, .modal-header {
+  background-color: #C00A27;
+  color: white;
+}
+
+.pizzaCount {
+  width: 20%;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  height: 80px;
+  background: #2C2C2C;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.back-to-top a {
+  color: white;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.back-to-top a:hover {
+  text-decoration: none;
+  opacity: 1;
+}
+
+
+/*
+  BUY BUTTON ANIMATION
+*/
+
+.buy-btn {
+  overflow: hidden;
+  height: 40px;
+  width: 120px;
+}
+
+.buy-btn:hover {
+  color: white;
+}
+
+.con {
+	position: relative;
+	transition: top .2s linear;
+}
+
+.st {
+	top: 0;
+}
+
+.nd {
+	top: 60px;
+}
+
+.buy-btn:hover .st {
+	top: -100px;
+}
+
+.buy-btn:hover .nd {
+	top: -25px;
+}
