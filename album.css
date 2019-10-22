@@ -19,8 +19,13 @@
   font-size: 40px;
 }
 
-a:hover {
+a {
   text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
   color: white;
 }
 
@@ -78,6 +83,20 @@ a:hover {
 .buy-btn, .modal-header {
   background-color: #C00A27;
   color: white;
+}
+
+.cart-order-item {
+  border: 1px solid lightgrey;
+  display: inline-block;
+  float: left;
+  border-radius: 5px;
+  padding: 5px 5px 0 5px;
+  margin: 0 5px 5px 0;
+}
+
+.order-sum {
+  display: block;
+  margin-top: 15px;
 }
 
 .pizzaCount {
@@ -140,4 +159,13 @@ footer p {
 
 .buy-btn:hover .nd {
 	top: -25px;
+}
+
+
+/* DASHBOARD STYLES */
+
+.table .thead-dark th {
+  vertical-align: middle;
+  text-align: center;
+  background-color: #2C2C2C;
 }

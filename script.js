@@ -8,6 +8,8 @@ function emptyCart(order) {
     inputs[i].value = "";
   }
 
+  $('.cart-order-list').html("");
+
   updateCartCount(order);
   console.log("Kosár kiürítve!");
   $('#myCart').hide();
@@ -32,7 +34,9 @@ $(document).ready(function(){
 
   $('#cart').on('click', function(){
     $('#myCart').show();
-    $('#myCart .cart-order').load("includes/calc.inc.php", {order: order});
+    if (!$.isEmptyObject(order)) {
+        $('.cart-order-list').load("includes/calc.inc.php", {order: order});
+    }
   });
 
   $('.card .buy-btn').on('click', function(e){
@@ -54,4 +58,13 @@ $(document).ready(function(){
   $('#emptyCart').on('click', function(){
     emptyCart(order);
   });
+
+
+  $('#submit').on('click', function(){
+    var name = $('#nameCart').val();
+    var address = $('#addressCart').val();
+    var phone = $('#phoneCart').val();
+    $("#myCart").load("includes/order.inc.php", {order: order, name: name, address: address, phone: phone});
+  });
+
 });

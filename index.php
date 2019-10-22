@@ -57,20 +57,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="cart-order">
-                  
-                </div>
               </div>
               <div class="modal-body">
+                <div class="cart-order-list">
+
+                </div>
                 <form action="includes/order.inc.php" method="post">
-                  <input type="text" name="name" class="form-control order" placeholder="Teljes név">
-                  <input type="text" name="address" class="form-control order" placeholder="Lakcím">
-                  <input type="text" name="phone" class="form-control order" placeholder="Telefonszám">
+                  <input type="text" name="name" id="nameCart" class="form-control order" placeholder="Teljes név">
+                  <input type="text" name="address" id="addressCart" class="form-control order" placeholder="Lakcím">
+                  <input type="text" name="phone" id="phoneCart" class="form-control order" placeholder="Telefonszám">
                 </form>
               </div>
               <div class="modal-footer">
                 <button type="button" id="emptyCart" class="btn btn-secondary" data-dismiss="modal">Kosár ürítése</button>
-                <button type="submit" class="btn buy-btn">Megrendel</button>
+                <button type="submit" name="submit" id="submit" class="btn buy-btn">Megrendel</button>
               </div>
             </div>
           </div>
