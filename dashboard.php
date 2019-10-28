@@ -13,12 +13,10 @@
 <html lang="hu">
 
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta http-equiv="content-type" content="text/html" charset="UTF-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
-  <meta name="author" content="Utasi Bence, Gábor Milán, Bódi Dominik">
-
   <title>Pizza rendelés</title>
 
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -56,6 +54,7 @@
                 <th>Rendelés</th>
                 <th>Fizetendő ár</th>
                 <th>Dátum</th>
+                <th>Idő</th>
               </tr>
             </thead>
           <?php
@@ -67,6 +66,8 @@
 
           if ($stmt->num_rows > 0) {
             while ($stmt->fetch()) {
+              $order_date = explode(" ", $order_date);
+              $order_date[1] = explode(":", $order_date[1]);
               echo '<tr>
                       <td>'.$order_id.'</td>
                       <td>'.$order_name.'</td>
@@ -74,7 +75,8 @@
                       <td>'.$order_tel.'</td>
                       <td>'.$order_pizzas.'</td>
                       <td>'.$order_price.'</td>
-                      <td>'.$order_date.'</td>
+                      <td>'.$order_date[0].'</td>
+                      <td>'.$order_date[1][0].":".$order_date[1][1].'</td>
                     </tr>';
             }
           }

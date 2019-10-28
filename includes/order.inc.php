@@ -11,7 +11,7 @@ if (isset($_POST['order'])) {
     $name = $_POST['name'];
     $address = $_POST['address'];
     $tel = $_POST['phone'];
-    $date = date("Y-m-d");
+    $date = date("Y-m-d H:i");
 
     //lekérem az összes pizzát objektumokat hozok létre majd azon végzek műveleteket
     $stmt = $conn->prepare("SELECT id, name, price, toppings FROM pizza ORDER BY id");

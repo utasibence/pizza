@@ -1,6 +1,6 @@
 function emptyCart(order) {
   for (var key in order) {
-      delete order[key];
+    delete order[key];
   }
 
   var inputs = $('input');
@@ -18,12 +18,14 @@ function emptyCart(order) {
 function updateCartCount(order) {
   var sum = 0;
   for (var key in order) {
-      sum += parseInt(order[key]);
+    sum += parseInt(order[key]);
   }
   $('.cart-num').html(sum);
 }
 
-$(document).ready(function(){
+//LOAD SCRIPT WHEN DOCUMENT IS READY
+
+$(document).ready(function() {
   var inputs = $('input');
 
   for (var i in inputs) {
@@ -32,14 +34,16 @@ $(document).ready(function(){
 
   var order = {};
 
-  $('#cart').on('click', function(){
+  $('#cart').on('click', function() {
     $('#myCart').show();
     if (!$.isEmptyObject(order)) {
-        $('.cart-order-list').load("includes/calc.inc.php", {order: order});
+      $('.cart-order-list').load("includes/calc.inc.php", {
+        order: order
+      });
     }
   });
 
-  $('.card .buy-btn').on('click', function(e){
+  $('.card .buy-btn').on('click', function(e) {
     e.preventDefault();
     var pizza = $(this).parent().siblings('h5').attr('data');
     var amount = $(this).prev().val();
@@ -51,20 +55,41 @@ $(document).ready(function(){
     updateCartCount(order);
   });
 
-  $('.close').on('click', function(){
+  $('.pizzaCount').on('change', function() {
+    if ($(this).val() < 0) {
+      $(this).val(0);
+    }
+  })
+
+  $('.close').on('click', function() {
     $('#myCart').hide();
   });
 
-  $('#emptyCart').on('click', function(){
+  $('#emptyCart').on('click', function() {
     emptyCart(order);
   });
 
 
-  $('#submit').on('click', function(){
+  $('#submit').on('click', function() {
     var name = $('#nameCart').val();
     var address = $('#addressCart').val();
     var phone = $('#phoneCart').val();
-    $("#myCart").load("includes/order.inc.php", {order: order, name: name, address: address, phone: phone});
+    $("#results").load("includes/order.inc.php", {
+      order: order,
+      name: name,
+      address: address,
+      phone: phone
+    }, function(statusTxt, xhr){
+      if (statusTxt == "success") {
+        alert("Sikeres rendelés.");
+      } else {
+        alert("A rendelés nem sikerült! Próbálja újra!");
+        console.log("Hiba: " + xhr.status + " : " + xhr.statusText);
+      }
+
+    });
+    emptyCart(order);
+    $('#myCart').hide();
   });
 
 });
