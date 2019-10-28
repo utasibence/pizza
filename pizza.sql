@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost
--- Létrehozás ideje: 2019. Okt 09. 12:16
+-- Létrehozás ideje: 2019. Okt 28. 11:56
 -- Kiszolgáló verziója: 10.3.16-MariaDB
 -- PHP verzió: 7.3.7
 
@@ -45,6 +45,32 @@ INSERT INTO `admins` (`id`, `email`, `passwd`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
+  `address` varchar(80) COLLATE utf8_hungarian_ci NOT NULL,
+  `tel` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
+  `pizzas` varchar(256) COLLATE utf8_hungarian_ci NOT NULL,
+  `price` int(11) NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `orders`
+--
+
+INSERT INTO `orders` (`id`, `name`, `address`, `tel`, `pizzas`, `price`, `date`) VALUES
+(11, 'Utasi Bence', '6800 Hódmezővásárhely, Móricz Zsigmond utca 24.', '+36302647418', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:18:00'),
+(12, 'Utasi Balázs', '6800 Hódmezővásárhely, Móricz Zsigmond utca 24.', '+36302654565', '2 db Magyaros pizza, 2 db Sonkás-kukoricás pizza, ', 4480, '2019-10-24 18:19:00'),
+(13, 'Kis Béla', '6800 hmvhely, béla utca ', 'aasd', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:20:00'),
+(14, 'u', 'u', 'u', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:32:00');
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `pizza`
 --
 
@@ -61,8 +87,8 @@ CREATE TABLE `pizza` (
 --
 
 INSERT INTO `pizza` (`id`, `name`, `price`, `toppings`, `img`) VALUES
-(1, 'Magyaros pizza', 1150, 'pizzaszósz,sajt,sonka,kolbász,hagyma,paprika,szalonna', 'magyaros.jpg'),
-(2, 'Sonkás-kukoricás pizza', 1090, 'pizzaszósz,sonka,sajt,csemegekukorica', 'sonka_kukorica.jpg'),
+(1, 'Magyaros pizza', 1150, 'pizzaszósz, sajt, sonka, kolbász, hagyma, paprika, szalonna', 'magyaros.jpg'),
+(2, 'Sonkás-kukoricás pizza', 1090, 'pizzaszósz, sonka, sajt, csemegekukorica', 'sonka_kukorica.jpg'),
 (3, 'Ananászos pizza', 1090, 'pizzaszósz, sajt, ananász', 'ananasz.jpg'),
 (4, 'Brokkolianan pizza', 1090, 'tejföl, sajt, brokkoli, ananász, szezámmag', 'brokkoli.jpg'),
 (5, 'Csőrike pizza', 1320, 'pizzaszósz, sajt, fokhagyma, csirkemell, hagyma, gomba, oliva', 'csorike.jpg'),
@@ -83,6 +109,12 @@ ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`);
 
 --
+-- A tábla indexei `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `pizza`
 --
 ALTER TABLE `pizza`
@@ -97,6 +129,12 @@ ALTER TABLE `pizza`
 --
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT a táblához `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT a táblához `pizza`
