@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost
--- Létrehozás ideje: 2019. Okt 28. 11:56
+-- Létrehozás ideje: 2019. Nov 24. 22:34
 -- Kiszolgáló verziója: 10.3.16-MariaDB
 -- PHP verzió: 7.3.7
 
@@ -53,7 +53,6 @@ CREATE TABLE `orders` (
   `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `address` varchar(80) COLLATE utf8_hungarian_ci NOT NULL,
   `tel` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
-  `pizzas` varchar(256) COLLATE utf8_hungarian_ci NOT NULL,
   `price` int(11) NOT NULL,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
@@ -62,11 +61,38 @@ CREATE TABLE `orders` (
 -- A tábla adatainak kiíratása `orders`
 --
 
-INSERT INTO `orders` (`id`, `name`, `address`, `tel`, `pizzas`, `price`, `date`) VALUES
-(11, 'Utasi Bence', '6800 Hódmezővásárhely, Móricz Zsigmond utca 24.', '+36302647418', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:18:00'),
-(12, 'Utasi Balázs', '6800 Hódmezővásárhely, Móricz Zsigmond utca 24.', '+36302654565', '2 db Magyaros pizza, 2 db Sonkás-kukoricás pizza, ', 4480, '2019-10-24 18:19:00'),
-(13, 'Kis Béla', '6800 hmvhely, béla utca ', 'aasd', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:20:00'),
-(14, 'u', 'u', 'u', '1 db Magyaros pizza, ', 1150, '2019-10-24 18:32:00');
+INSERT INTO `orders` (`id`, `name`, `address`, `tel`, `price`, `date`) VALUES
+(24, 'Utasi Bence', '6724 Szeged, Alföldi utca 1.', '+36302647411', 2640, '2019-11-24 20:47:00'),
+(25, 'Bódi Dominik', '6800 Hódmezővásárhely, Béla utca 1.', '+36202543423', 5910, '2019-11-24 20:58:00'),
+(26, 'Gábor Milán', '6724 Szeged, Boldogasszony sgt. 10. 1/B.', '+36208726343', 4910, '2019-11-24 21:00:00'),
+(27, 'Kis Péter', '6750 Algyő', '+36702988726', 15380, '2019-11-24 22:34:00');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `orders_pizza`
+--
+
+CREATE TABLE `orders_pizza` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `pizza_id` int(11) NOT NULL,
+  `db` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `orders_pizza`
+--
+
+INSERT INTO `orders_pizza` (`id`, `order_id`, `pizza_id`, `db`) VALUES
+(11, 24, 5, 2),
+(12, 25, 8, 2),
+(13, 25, 9, 3),
+(14, 26, 7, 3),
+(15, 26, 10, 1),
+(16, 27, 1, 2),
+(17, 27, 2, 2),
+(18, 27, 3, 10);
 
 -- --------------------------------------------------------
 
@@ -115,6 +141,14 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- A tábla indexei `orders_pizza`
+--
+ALTER TABLE `orders_pizza`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `pizza_id` (`pizza_id`);
+
+--
 -- A tábla indexei `pizza`
 --
 ALTER TABLE `pizza`
@@ -134,13 +168,30 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT a táblához `orders_pizza`
+--
+ALTER TABLE `orders_pizza`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT a táblához `pizza`
 --
 ALTER TABLE `pizza`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `orders_pizza`
+--
+ALTER TABLE `orders_pizza`
+  ADD CONSTRAINT `orders_pizza_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `orders_pizza_ibfk_2` FOREIGN KEY (`pizza_id`) REFERENCES `pizza` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
