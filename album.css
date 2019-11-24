@@ -125,11 +125,9 @@ footer p {
   opacity: 1;
 }
 
-
 /*
   BUY BUTTON ANIMATION
 */
-
 .buy-btn {
   overflow: hidden;
   height: 40px;
@@ -141,31 +139,41 @@ footer p {
 }
 
 .con {
-	position: relative;
-	transition: top .2s linear;
+  position: relative;
+  transition: top .2s linear;
 }
 
 .st {
-	top: 0;
+  top: 0;
 }
 
 .nd {
-	top: 60px;
+  top: 60px;
 }
 
 .buy-btn:hover .st {
-	top: -100px;
+  top: -100px;
 }
 
 .buy-btn:hover .nd {
-	top: -25px;
+  top: -25px;
 }
 
-
 /* DASHBOARD STYLES */
-
+.table tr td,
 .table .thead-dark th {
   vertical-align: middle;
   text-align: center;
+}
+
+.table .thead-dark th {
   background-color: #2C2C2C;
+}
+
+.orderid {
+  color: #C00A27;
+}
+
+.newline {
+  border-top: 3px solid #2C2C2C;
 }

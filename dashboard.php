@@ -51,34 +51,57 @@
                 <th>Név</th>
                 <th>Lakcím</th>
                 <th>Telefon</th>
-                <th>Rendelés</th>
-                <th>Fizetendő ár</th>
+                <th>Pizza</th>
+                <th>Darab</th>
+                <th>Fizetendő ár (Ft)</th>
                 <th>Dátum</th>
                 <th>Idő</th>
               </tr>
             </thead>
           <?php
 
-          $stmt = $conn->prepare("SELECT id, name, address, tel, pizzas, price, date FROM orders ORDER BY date DESC");
-          $stmt->execute();
-          $stmt->store_result();
-          $stmt->bind_result($order_id, $order_name, $order_address, $order_tel, $order_pizzas, $order_price, $order_date);
+          try {
+            $stmt = $conn->prepare("SELECT orders.id, orders.name, orders.address, orders.tel, orders.price, orders.date, pizza.name, orders_pizza.db FROM orders INNER JOIN orders_pizza ON orders.id=orders_pizza.order_id INNER JOIN pizza ON orders_pizza.pizza_id=pizza.id ORDER BY date DESC");
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($order_id, $order_name, $order_address, $order_tel, $order_price, $order_date, $pizza_name, $pizza_amount);
 
-          if ($stmt->num_rows > 0) {
-            while ($stmt->fetch()) {
-              $order_date = explode(" ", $order_date);
-              $order_date[1] = explode(":", $order_date[1]);
-              echo '<tr>
-                      <td>'.$order_id.'</td>
-                      <td>'.$order_name.'</td>
-                      <td>'.$order_address.'</td>
-                      <td>'.$order_tel.'</td>
-                      <td>'.$order_pizzas.'</td>
-                      <td>'.$order_price.'</td>
-                      <td>'.$order_date[0].'</td>
-                      <td>'.$order_date[1][0].":".$order_date[1][1].'</td>
-                    </tr>';
+            $prev_id = 0;
+            if ($stmt->num_rows > 0) {
+              while ($stmt->fetch()) {
+                $order_date = explode(" ", $order_date);
+                $order_date[1] = explode(":", $order_date[1]);
+                if ($prev_id == $order_id) {
+                  echo '<tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>'.$pizza_name.'</td>
+                          <td>'.$pizza_amount.'</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>';
+                } else {
+                  echo '<tr class="newline">
+                          <td class="orderid">'.$order_id.'</td>
+                          <td>'.$order_name.'</td>
+                          <td>'.$order_address.'</td>
+                          <td>'.$order_tel.'</td>
+                          <td>'.$pizza_name.'</td>
+                          <td>'.$pizza_amount.'</td>
+                          <td>'.$order_price.'</td>
+                          <td>'.$order_date[0].'</td>
+                          <td>'.$order_date[1][0].":".$order_date[1][1].'</td>
+                        </tr>';
+                }
+
+                $prev_id = $order_id;
+              }
             }
+          } catch (Exception $e) {
+            echo "Hiba történt a rendelések megjelenítésekor!";
           }
           ?>
 
@@ -92,7 +115,7 @@
   <footer class="text-muted">
     <div class="container">
       <p class="float-right back-to-top">
-        <a href="#">top <i class="fas fa-sort-up"></i></a>
+        <a href="#"><i class="fas fa-sort-up"></i></a>
       </p>
     </div>
   </footer>

@@ -13,37 +13,52 @@ if (isset($_POST['order'])) {
     $tel = $_POST['phone'];
     $date = date("Y-m-d H:i");
 
-    //lekérem az összes pizzát objektumokat hozok létre majd azon végzek műveleteket
-    $stmt = $conn->prepare("SELECT id, name, price, toppings FROM pizza ORDER BY id");
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($pizza_id, $pizza_name, $pizza_price, $pizza_toppings);
+    try {
+      //lekérem az összes pizzát objektumokat hozok létre majd azon végzek műveleteket
+      $stmt = $conn->prepare("SELECT id, name, price, toppings FROM pizza ORDER BY id");
+      $stmt->execute();
+      $stmt->store_result();
+      $stmt->bind_result($pizza_id, $pizza_name, $pizza_price, $pizza_toppings);
 
-    if ($stmt->num_rows > 0) {
-      while ($stmt->fetch()) {
-        array_push($pizzas, new Pizza($pizza_id, $pizza_name, $pizza_price, $pizza_toppings));
-      }
-    }
-
-    foreach ($pizzas as $pizza) {
-      foreach ($_POST['order'] as $value => $db) {
-        if ($pizza->getId() == $value) {
-          $order .= $db." db ".$pizza->getName().", ";
-          $fullPrice += $pizza->getPrice() * $db;
+      if ($stmt->num_rows > 0) {
+        while ($stmt->fetch()) {
+          array_push($pizzas, new Pizza($pizza_id, $pizza_name, $pizza_price, $pizza_toppings));
         }
       }
+
+      foreach ($pizzas as $pizza) {
+        foreach ($_POST['order'] as $value => $db) {
+          if ($pizza->getId() == $value) {
+            $fullPrice += $pizza->getPrice() * $db;
+          }
+        }
+      }
+
+      $stmt = $conn->prepare("INSERT INTO orders (name, address, tel, price, date) VALUES (?, ?, ?, ?, ?)");
+      $stmt->bind_param("sssss", $name, $address, $tel, $fullPrice, $date);
+      $stmt->execute();
+      $stmt->store_result();
+
+      $last_id = $conn->insert_id;
+      foreach ($pizzas as $pizza) {
+        foreach ($_POST['order'] as $value => $db) {
+          if ($pizza->getId() == $value) {
+            $pizza_id = $pizza->getId();
+            $stmt = $conn->prepare("INSERT INTO orders_pizza (order_id, pizza_id, db) VALUES (?, ?, ?)");
+            $stmt->bind_param("iii", $last_id, $pizza_id, $db);
+            $stmt->execute();
+            $stmt->store_result();
+          }
+        }
+      }
+
+      echo "Sikeres rendelés. Megrendelési azonosítója: ".$last_id;
+    } catch (Exception $e) {
+      echo "Adatbázis kapcsolati hiba!";
     }
-
-    $stmt = $conn->prepare("INSERT INTO orders (name, address, tel, pizzas, price, date) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $name, $address, $tel, $order, $fullPrice, $date);
-    $stmt->execute();
-    $stmt->store_result();
   } else {
-    echo "empty input";
+    echo "Hiba! Kérem töltse ki az összes mezőt megrendeléskor!";
   }
-
-  // TODO: hibakezelés, esetleg a rendelést és a vásárlót külön táblákra bontani
 } else {
-  //TODO: esetleges callback megvalósítása js-ben
-  //https://www.w3schools.com/jquery/jquery_ajax_load.asp
+  echo "Hiba! Adjon pizzát a kosárhoz!";
 }

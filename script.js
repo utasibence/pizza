@@ -79,17 +79,17 @@ $(document).ready(function() {
       name: name,
       address: address,
       phone: phone
-    }, function(statusTxt, xhr){
-      if (statusTxt == "success") {
-        alert("Sikeres rendelés.");
-      } else {
-        alert("A rendelés nem sikerült! Próbálja újra!");
-        console.log("Hiba: " + xhr.status + " : " + xhr.statusText);
-      }
-
+    }, function(data){
+      console.log(data);
+      $('.alert').show();
     });
     emptyCart(order);
     $('#myCart').hide();
+  });
+
+  $('.alert-secondary').hide();
+  $('.alert').on('click', 'button', function() {
+    $(this).parent().hide();
   });
 
 });

@@ -85,28 +85,60 @@
   </header>
 
   <main role="main">
-    <div id="results">
-
-    </div>
-
-
     <div class="album py-5 bg-light">
       <div class="container">
 
+        <!-- Alert -->
+        <?php
+        $html = "";
+        if (isset($_GET['login'])) {
+          switch ($_GET['login']) {
+            case 'empty':
+              $html = "Bejelentkezéshez töltsön ki minden mezőt!";
+              break;
+            case 'invalid_password':
+              $html = "Bejelentkezéskor helytelen jelszót adott meg!";
+              break;
+            case 'invalid_email':
+              $html = "Bejelentkezéskor helytelen email címet adott meg!";
+              break;
+            case 'error':
+              $html = "Bejelentkezéskor hiba lépett fel!";
+              break;
+          }
+          echo '<div class="alert alert-warning alert-dismissible hidden" role="alert">
+            <span>'.$html.'</span>
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>';
+        }
+        ?>
+        <div class="alert alert-secondary alert-dismissible hidden" role="alert">
+          <span id="results"></span>
+          <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- Alert -->
+
         <div class="row">
 
-
           <?php
-            $pizzas = array();
-            $stmt = $conn->prepare("SELECT id, name, price, toppings, img FROM pizza ORDER BY id");
-            $stmt->execute();
-            $stmt->store_result();
-            $stmt->bind_result($pizza_id, $pizza_name, $pizza_price, $pizza_toppings, $pizza_img);
+            try {
+              $pizzas = array();
+              $stmt = $conn->prepare("SELECT id, name, price, toppings, img FROM pizza ORDER BY id");
+              $stmt->execute();
+              $stmt->store_result();
+              $stmt->bind_result($pizza_id, $pizza_name, $pizza_price, $pizza_toppings, $pizza_img);
 
-            if ($stmt->num_rows > 0) {
-              while ($stmt->fetch()) {
-                printPizza($pizza_id, $pizza_name, $pizza_price, $pizza_toppings, $pizza_img);
+              if ($stmt->num_rows > 0) {
+                  while ($stmt->fetch()) {
+                      printPizza($pizza_id, $pizza_name, $pizza_price, $pizza_toppings, $pizza_img);
+                  }
               }
+            } catch (Exception $e) {
+              echo "Hiba történt a pizzák megjelenítésekor!";
             }
           ?>
 
@@ -119,7 +151,7 @@
   <footer class="text-muted">
     <div class="container">
       <p class="float-right back-to-top">
-        <a href="#">top <i class="fas fa-sort-up"></i></a>
+        <a href="#"><i class="fas fa-sort-up"></i></a>
       </p>
     </div>
   </footer>
